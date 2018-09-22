@@ -2,13 +2,14 @@
   ******************************************************************************
   * @file    sd_diskio.h 
   * @author  MCD Application Team
-  * @version V1.4.1
-  * @date    14-February-2017
-  * @brief   Header for sd_diskio.c module
+  * @version V2.0.2
+  * @date    10-November-2017
+  * @brief   Header for sd_diskio.c module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2017 STMicroelectronics</center></h2>
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics International N.V.
+  * All rights reserved.</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without 
   * modification, are permitted, provided that the following conditions are met:
@@ -52,7 +53,7 @@
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-extern Diskio_drvTypeDef  SD_Driver;
+extern const Diskio_drvTypeDef  SD_Driver;
 
 #endif /* __SD_DISKIO_H */
 
