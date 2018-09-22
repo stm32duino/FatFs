@@ -3,7 +3,7 @@
   ******************************************************************************
   *  
   *           Portions COPYRIGHT 2017 STMicroelectronics                       
-  *           Portions Copyright (C) 2015, ChaN, all right reserved            
+  *           Portions Copyright (C) 2017, ChaN, all right reserved            
   *
   * @file    st_readme.txt 
   * @author  MCD Application Team
@@ -12,6 +12,9 @@
   *          For more details on FatFs implementation on STM32Cube, please refer
   *          to UM1721 "Developing Applications on STM32Cube with FatFs"  
   ******************************************************************************
+  *
+  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics International N.V. 
+  * All rights reserved.</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without 
   * modification, are permitted, provided that the following conditions are met:
@@ -47,22 +50,74 @@
   ******************************************************************************
   @endverbatim
 
-### V1.4.1/14-February-2017 ###
-===============================
-  + sd_diskio.c, sdram_diskio.c and sram_diskio.c: fix bug in ioctl() function; when called with
-    "GET_BLOCK_SIZE" as "cmd" parameter value, the “res” variable is not updated with “RES_OK” value
-    thus the FatFs is getting always "RES_ERROR" as return value, which leads to ignore the actual block size.
-  + sdram_diskio.c and sram_diskio.c: update initialize() function to check the return value of BSP Init function.
-
-
-### V1.4.0/23-December-2016 ###
-===============================
-  + Update sd_diskio.c to align with latest changes on SD HAL & BSP APIs, these changes are integrated
-    in STM32Cube F4 V1.15.0 and F7 V1.6.0 and break the compatibility with previous version.
-
-
-### V1.3.0/23-December-2016 ###
+### V2.0.2/17-November-2017 ###
 ============================
++ sdram_diskio_template.c  sram_diskio_template.c
+   Fix wrong buffer size in the (SRAM/SDRAM)DISK_read(), (SRAM/SDRAM)DISK_write()
+
++ sd_diskio_template.c
+  - define a generic 'SD_TIMEOUT' based on the BSP drivers defines. This fixes
+    a build issue when using this driver with the Adafruitshield.
+
++ sd_diskio_dma_rtos_template.c 
+  - add a check via  osKernelRunning(), to avoid runtime errors due to
+    osMessageXXX calls that needs the "osKernelStart()" call done first.
+
++ sd_diskio_dma_template.c, sd_diskio_dma_rtos_template.c 
+  - fix wrong address alignment when calling SCB_InvalidateDCache_by_Addr() and
+    SCB_CleanDCache_by_Addr(), the address has to be 32-Byte and not
+    32-bit aligned.
+
+  - fix BSP_SD_ReadCpltCallback() and BSP_SD_WriteCpltCallback() prototypes by
+    adding 'void' as argument to avoid IAR compiler errors
+
+
++ sd_diskio_template.c sd_diskio_dma_template.c, sd_diskio_dma_rtos_template.c 
+  - add the  flag "DISABLE_SD_INIT" to give the user the choice to initialize the SD
+    either in the application or in the FatFs diskio driver.
+
++ all xxx_diskio_template.c
+  - fix GET_BLOCK_SIZE ioctl call; the return value is in unit of sectors.
+
+
+### V2.0.1/10-July-2017 ###
+============================
++ sd_diskio_dma_template.c, sd_diskio_dma_rtos_template.c 
+  - add the  flag "ENABLE_SD_DMA_CACHE_MAINTENACE", to enable cache maintenance  at each read write operation. 
+    This is useful for STM32F7/STM32H7 based platforms when using a cachable memory region.
+  - add timeout checks in SD_Read() and SD_Write() to give the control back to the application to decide in case of errors.
+
++ ff_gen_drv.c: fix a wrong check that causes an out of bound array access.
+
+
+### V2.0.0/07-March-2017 ###
+============================
+  + Upgrade to use FatFS R0.12c. The R0.12c breaks the API compatibility with R0.11b.
+  - f_mkfs() API has a new signature.
+  - The _CODE_PAGE got new values.
+  - For more details check the files (doc/updates.txt) and the following urls:
+       http://elm-chan.org/fsw/ff/en/mkfs.html
+       http://elm-chan.org/fsw/ff/en/config.html
+  
+  + Add USB, RAMDISK and uSD template drivers under src/drivers.
+    - The diskio drivers aren't part of fatfs anymore, they are just templates instead.
+    - User has to copy the suitable template .c/.h file under the project, rename them by
+      removing the "_template" suffix then link them into the final application.
+    - The diskio driver .c/.h files have to be edited according to the used platform.
+ 
+  + Define the macros "ff_malloc" and "ff_free" in the ff_conf_template.h and use
+    them in the syscall.c instead of direct calls to stdlib malloc and free functions.
+  + Define the "__weak" attribute in diskio.c for the GNU GCC compiler
+
+
+### V1.4.0/09-September-2016 ###
+================================
+  + Upgrade to use FatFs R0.12b.
+  + ff_conf.h: remove the use of define "_USE_BUFF_WO_ALIGNMENT".
+     
+
+### V1.3.0/08-May-2015 ###
+==========================
   + Upgrade to use FatFs R0.11.
   + Add new APIs FATFS_LinkDriverEx() and FATFS_UnLinkDriverEx() to manage USB Key Disk having 
      multi-lun capability. These APIs are equivalent to FATFS_LinkDriver() and FATFS_UnLinkDriver()
