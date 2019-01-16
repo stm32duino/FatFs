@@ -107,9 +107,9 @@ static DSTATUS SD_CheckStatus(BYTE lun)
 {
   Stat = STA_NOINIT;
 
-#if defined (STM32F4xx) || defined(STM32F7xx) || defined(STM32L4xx)
+#ifndef STM32L1xx
   if(BSP_SD_GetCardState() == MSD_OK)
-#else /* (STM32F1xx) || defined(STM32F2xx) || defined(STM32L1xx) */
+#else /* STM32L1xx */
   if(BSP_SD_GetStatus() == MSD_OK)
 #endif
   {
@@ -160,7 +160,7 @@ DSTATUS SD_status(BYTE lun)
   */
 DRESULT SD_read(BYTE lun, BYTE *buff, DWORD sector, UINT count)
 {
-#if defined (STM32F4xx) || defined(STM32F7xx) || defined(STM32L4xx)
+#ifndef STM32L1xx
   DRESULT res = RES_ERROR;
 
   if(BSP_SD_ReadBlocks((uint32_t*)buff,
@@ -173,7 +173,7 @@ DRESULT SD_read(BYTE lun, BYTE *buff, DWORD sector, UINT count)
     }
     res = RES_OK;
   }
-#else /* (STM32F1xx) || defined(STM32F2xx) || defined(STM32L1xx) */
+#else /* STM32L1xx */
   DRESULT res = RES_OK;
 
   if(BSP_SD_ReadBlocks((uint32_t*)buff,
@@ -198,7 +198,7 @@ DRESULT SD_read(BYTE lun, BYTE *buff, DWORD sector, UINT count)
 #if _USE_WRITE == 1
 DRESULT SD_write(BYTE lun, const BYTE *buff, DWORD sector, UINT count)
 {
-#if defined (STM32F4xx) || defined(STM32F7xx) || defined(STM32L4xx)
+#ifndef STM32L1xx
   DRESULT res = RES_ERROR;
 
   if(BSP_SD_WriteBlocks((uint32_t*)buff,
@@ -211,7 +211,7 @@ DRESULT SD_write(BYTE lun, const BYTE *buff, DWORD sector, UINT count)
     }
     res = RES_OK;
   }
-#else /* (STM32F1xx) || defined(STM32F2xx) || defined(STM32L1xx) */
+#else /* STM32L1xx */
   DRESULT res = RES_OK;
 
   if(BSP_SD_WriteBlocks((uint32_t*)buff,
@@ -236,9 +236,9 @@ DRESULT SD_write(BYTE lun, const BYTE *buff, DWORD sector, UINT count)
 DRESULT SD_ioctl(BYTE lun, BYTE cmd, void *buff)
 {
   DRESULT res = RES_ERROR;
-#if defined (STM32F4xx) || defined(STM32F7xx) || defined(STM32L4xx)
+#ifndef STM32L1xx
   BSP_SD_CardInfo CardInfo;
-#else /* (STM32F1xx) || defined(STM32F2xx) || defined(STM32L1xx) */
+#else /* STM32L1xx */
   SD_CardInfo CardInfo;
 #endif
   if (Stat & STA_NOINIT) return RES_NOTRDY;
@@ -253,9 +253,9 @@ DRESULT SD_ioctl(BYTE lun, BYTE cmd, void *buff)
   /* Get number of sectors on the disk (DWORD) */
   case GET_SECTOR_COUNT :
     BSP_SD_GetCardInfo(&CardInfo);
-#if defined (STM32F4xx) || defined(STM32F7xx) || defined(STM32L4xx)
+#ifndef STM32L1xx
     *(DWORD*)buff = CardInfo.LogBlockNbr;
-#else /* (STM32F1xx) || defined(STM32F2xx) || defined(STM32L1xx) */
+#else /* STM32L1xx */
     *(DWORD*)buff = CardInfo.CardCapacity / SD_DEFAULT_BLOCK_SIZE;
 #endif
     res = RES_OK;
@@ -263,10 +263,10 @@ DRESULT SD_ioctl(BYTE lun, BYTE cmd, void *buff)
 
   /* Get R/W sector size (WORD) */
   case GET_SECTOR_SIZE :
-#if defined (STM32F4xx) || defined(STM32F7xx) || defined(STM32L4xx)
+#ifndef STM32L1xx
     BSP_SD_GetCardInfo(&CardInfo);
     *(WORD*)buff = CardInfo.LogBlockSize;
-#else /* (STM32F1xx) || defined(STM32F2xx) || defined(STM32L1xx) */
+#else /* STM32L1xx */
     *(WORD*)buff = SD_DEFAULT_BLOCK_SIZE;
 #endif
     res = RES_OK;
@@ -274,10 +274,10 @@ DRESULT SD_ioctl(BYTE lun, BYTE cmd, void *buff)
 
   /* Get erase block size in unit of sector (DWORD) */
   case GET_BLOCK_SIZE :
-#if defined (STM32F4xx) || defined(STM32F7xx) || defined(STM32L4xx)
+#ifndef STM32L1xx
     BSP_SD_GetCardInfo(&CardInfo);
     *(DWORD*)buff = CardInfo.LogBlockSize / SD_DEFAULT_BLOCK_SIZE;
-#else /* (STM32F1xx) || defined(STM32F2xx) || defined(STM32L1xx) */
+#else /* STM32L1xx */
     *(DWORD*)buff = SD_DEFAULT_BLOCK_SIZE;
 #endif
     res = RES_OK;
