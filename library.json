@@ -1,0 +1,26 @@
+{
+    "name": "FatFS",
+    "keywords": "Fat, FS, Storage",
+    "description": "FAT file system based on open-source FatFS solution",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/stm32duino/FatFs.git"
+    },
+    "version": "2.0.3",
+    "authors": [
+        {
+            "url": "http://elm-chan.org/fsw/ff/00index_e.html",
+            "maintainer": false,
+            "email": "user5@elm-chan.org",
+            "name": "Chan"
+        },
+        {
+            "url": "https://www.st.com/",
+            "maintainer": false,
+            "email": null,
+            "name": "STMicroelectronics"
+        }
+    ],
+    "frameworks": "*",
+    "platforms": "*"
+}
