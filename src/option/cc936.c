@@ -6,7 +6,10 @@
 #include "../ff.h"
 
 
-#if (_USE_LFN != 0) && (_CODE_PAGE == 936)
+#if !_USE_LFN || _CODE_PAGE != 936
+#error This file is not needed in current configuration. Remove from the project.
+#endif
+
 static
 const WCHAR uni2oem[] = {
 /*  Unicode - OEM,  Unicode - OEM,  Unicode - OEM,  Unicode - OEM */
@@ -10919,7 +10922,7 @@ const WCHAR oem2uni[] = {
 
 WCHAR ff_convert (	/* Converted code, 0 means conversion error */
 	WCHAR	chr,	/* Character code to be converted */
-	UINT	dir		/* 0: Unicode to OEMCP, 1: OEMCP to Unicode */
+	UINT	dir		/* 0: Unicode to OEM code, 1: OEM code to Unicode */
 )
 {
 	const WCHAR *p;
@@ -10930,10 +10933,10 @@ WCHAR ff_convert (	/* Converted code, 0 means conversion error */
 	if (chr < 0x80) {	/* ASCII */
 		c = chr;
 	} else {
-		if (dir) {		/* OEMCP to unicode */
+		if (dir) {		/* OEM code to unicode */
 			p = oem2uni;
 			hi = sizeof oem2uni / 4 - 1;
-		} else {		/* Unicode to OEMCP */
+		} else {		/* Unicode to OEM code */
 			p = uni2oem;
 			hi = sizeof uni2oem / 4 - 1;
 		}
@@ -11039,4 +11042,4 @@ WCHAR ff_wtoupper (	/* Returns upper converted character */
 
 	return chr;
 }
-#endif
+

@@ -6,7 +6,11 @@
 #include "../ff.h"
 
 
-#if (_USE_LFN != 0) && (_CODE_PAGE == 949)
+#if !_USE_LFN || _CODE_PAGE != 949
+#error This file is not needed in current configuration. Remove from the project.
+#endif
+
+
 static
 const WCHAR uni2oem[] = {
 /*  Unicode - OEM,  Unicode - OEM,  Unicode - OEM,  Unicode - OEM */
@@ -8642,7 +8646,6 @@ WCHAR ff_wtoupper (	/* Returns upper converted character */
 	const WCHAR *p;
 	WCHAR bc, nc, cmd;
 
-	for (i = 0; tbl_lower[i] && chr != tbl_lower[i]; i++) ;
 
 	p = chr < 0x1000 ? cvt1 : cvt2;
 	for (;;) {
@@ -8668,4 +8671,4 @@ WCHAR ff_wtoupper (	/* Returns upper converted character */
 
 	return chr;
 }
-#endif
+
