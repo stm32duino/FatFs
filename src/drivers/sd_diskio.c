@@ -1,10 +1,8 @@
 /**
   ******************************************************************************
-  * @file    sd_diskio_template_bspv1.c
+  * @file    sd_diskio.c
   * @author  MCD Application Team
-  * @brief   SD Disk I/O template driver based on BSP v1 api. This file needs
-  * to be renamed and copied into the application project alongside
-  * the respective header file
+  * @brief   SD Disk I/O driver based on BSP v1 api.
   ******************************************************************************
   * @attention
   *
@@ -211,7 +209,7 @@ DRESULT SD_ioctl(BYTE lun, BYTE cmd, void *buff)
   case GET_BLOCK_SIZE :
     BSP_SD_GetCardInfo(&CardInfo);
     *(DWORD*)buff = CardInfo.LogBlockSize / SD_DEFAULT_BLOCK_SIZE;
-	res = RES_OK;
+    res = RES_OK;
     break;
 
   default:

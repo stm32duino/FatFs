@@ -1,9 +1,8 @@
 /**
   ******************************************************************************
-  * @file    sd_diskio_tempalte.h
+  * @file    sd_diskio.h
   * @author  MCD Application Team
-  * @brief   Header for sd_diskio_template.c module.This file needs to be
-             customized then copied under the application project
+  * @brief   Header for sd_diskio.c module.
   ******************************************************************************
   * @attention
   *
@@ -21,7 +20,6 @@
 #define __SD_DISKIO_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32xxxxx_{eval}{discovery}_sd.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
