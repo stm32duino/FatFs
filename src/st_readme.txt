@@ -19,6 +19,24 @@
   ******************************************************************************
   @endverbatim
 
+### V4.0.4/20-02-2026 ###
+============================
++ Update the "sector address" parameter type from "DWORD" to "LBA_t" in the disk_read() and disk_write() function prototypes
+  - ff_gen_drv.h
+
+### V4.0.3/14-03-2025 ###
+============================
++ Protect the SCB_CleanDCache_by_Addr calls in SD_DMA_Write() by a check on ENABLE_SD_DMA_CACHE_MAINTENANCE config flag.
+  - drivers/sd/sd_diskio_dma_rtos.c
+
+### V4.0.2/20-12-2024 ###
+============================
++ Remove wrong casting of "buff" in the USBH_read(), USBH_write() and USBH_ioctl() functions
+  - drivers/usb_host/usbh_diskio.c
+
++ Fix wrong cache management in the SD_DMA_write() function
+  - drivers/sd/sd_diskio_dma_rtos.c
+
 ### V4.0.1/18-08-2023 ###
 ============================
 + Add LICENSE.md file at the root directory.

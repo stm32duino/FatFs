@@ -39,8 +39,8 @@ typedef struct
 {
   DSTATUS (*disk_initialize) (BYTE);                           /*!< Initialize Disk Drive*/
   DSTATUS (*disk_status)     (BYTE);                           /*!< Get Disk Status*/
-  DRESULT (*disk_read)       (BYTE, BYTE*, DWORD, UINT);       /*!< Read Sector(s)*/
-  DRESULT (*disk_write)      (BYTE, const BYTE*, DWORD, UINT); /*!< Write Sector(s)*/
+  DRESULT (*disk_read)       (BYTE, BYTE*, LBA_t, UINT);       /*!< Read Sector(s)*/
+  DRESULT (*disk_write)      (BYTE, const BYTE*, LBA_t, UINT); /*!< Write Sector(s)*/
   DRESULT (*disk_ioctl)      (BYTE, BYTE, void*);              /*!< I/O control operation*/
 }Diskio_drvTypeDef;
 
